@@ -11,7 +11,7 @@ public class ProductoMapper {
         return ProductoResponse.builder()
                 .id(p.getId())
                 .nombre(p.getNombre())
-                .descripcion(p.getDescipcion())
+                .descripcion(p.getDescripcion())
                 .precio(p.getPrecio())
                 .imagenUrl(p.getImagenUrl())
                 .unidad(p.getUnidad())

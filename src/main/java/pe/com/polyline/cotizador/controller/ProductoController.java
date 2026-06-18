@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pe.com.polyline.cotizador.dto.request.ProductoRequest;
 import pe.com.polyline.cotizador.dto.response.ProductoResponse;
 import pe.com.polyline.cotizador.service.ProductoService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -52,5 +54,27 @@ public class ProductoController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         productoService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(
+            value = "/upload",
+            consumes = "multipart/form-data"
+    )
+    public ResponseEntity<ProductoResponse> crearConImagen(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("precio") BigDecimal precio,
+            @RequestParam("unidad") String unidad,
+            @RequestParam("proveedor") String proveedor,
+            @RequestParam("enStock") Boolean enStock,
+            @RequestParam("categoriaId") Long categoriaId
+    ) {
+
+        ProductoResponse producto = productoService.crearConImagen(
+                file, nombre, descripcion, precio, unidad, proveedor, enStock, categoriaId
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(producto);
     }
 }

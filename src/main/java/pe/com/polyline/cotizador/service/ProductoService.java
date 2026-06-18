@@ -1,9 +1,11 @@
 package pe.com.polyline.cotizador.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import pe.com.polyline.cotizador.dto.request.ProductoRequest;
 import pe.com.polyline.cotizador.dto.response.ProductoResponse;
 import pe.com.polyline.cotizador.model.Producto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductoService {
@@ -23,5 +25,17 @@ public interface ProductoService {
     ProductoResponse actualizar(Long id, ProductoRequest request);
 
     void eliminar(Long id);
+
+
+    ProductoResponse crearConImagen(
+            MultipartFile file,
+            String nombre,
+            String descripcion,
+            BigDecimal precio,
+            String unidad,
+            String proveedor,
+            Boolean enStock,
+            Long categoriaId
+    );
 
 }

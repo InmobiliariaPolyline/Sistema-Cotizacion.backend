@@ -3,6 +3,7 @@ package pe.com.polyline.cotizador.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import pe.com.polyline.cotizador.dto.request.ProductoRequest;
 import pe.com.polyline.cotizador.dto.response.ProductoResponse;
 import pe.com.polyline.cotizador.exception.RecursoNoEncontradoException;
@@ -11,8 +12,10 @@ import pe.com.polyline.cotizador.model.Categoria;
 import pe.com.polyline.cotizador.model.Producto;
 import pe.com.polyline.cotizador.repository.ProductoRepository;
 import pe.com.polyline.cotizador.service.CategoriaService;
+import pe.com.polyline.cotizador.service.CloudinaryService;
 import pe.com.polyline.cotizador.service.ProductoService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -22,6 +25,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoRepository productoRepository;
     private final CategoriaService categoriaService;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public List<ProductoResponse> listarActivos() {
@@ -65,7 +69,7 @@ public class ProductoServiceImpl implements ProductoService {
 
         Producto producto = Producto.builder()
                 .nombre(request.getNombre().trim())
-                .descipcion(request.getDescripcion())
+                .descripcion(request.getDescripcion())
                 .precio(request.getPrecio())
                 .imagenUrl(request.getImagenUrl())
                 .unidad(request.getUnidad().trim())
@@ -87,7 +91,7 @@ public class ProductoServiceImpl implements ProductoService {
         Categoria categoria = categoriaService.obtenerEntidad(request.getCategoriaId());
 
         producto.setNombre(request.getNombre().trim());
-        producto.setDescipcion(request.getDescripcion());
+        producto.setDescripcion(request.getDescripcion());
         producto.setPrecio(request.getPrecio());
         producto.setImagenUrl(request.getImagenUrl());
         producto.setUnidad(request.getUnidad().trim());
@@ -106,6 +110,41 @@ public class ProductoServiceImpl implements ProductoService {
 
         producto.setActivo(false);
         productoRepository.save(producto);
+    }
+
+    @Override
+    @Transactional
+    public ProductoResponse crearConImagen(
+            MultipartFile file,
+            String nombre,
+            String descripcion,
+            BigDecimal precio,
+            String unidad,
+            String proveedor,
+            Boolean enStock,
+            Long categoriaId
+    ) {
+
+        // 1. subir imagen
+        String imageUrl = cloudinaryService.uploadFile(file);
+
+        // 2. obtener categoría
+        Categoria categoria = categoriaService.obtenerEntidad(categoriaId);
+
+        // 3. crear producto
+        Producto producto = Producto.builder()
+                .nombre(nombre.trim())
+                .descripcion(descripcion)
+                .precio(precio)
+                .imagenUrl(imageUrl)
+                .unidad(unidad)
+                .proveedor(proveedor)
+                .enStock(enStock)
+                .categoria(categoria)
+                .activo(true)
+                .build();
+
+        return ProductoMapper.toResponse(productoRepository.save(producto));
     }
 
 }

@@ -29,7 +29,7 @@ public class Producto {
 
     // DESCRIPCIÓN DETALLADA
     @Column(columnDefinition = "TEXT")
-    private String descipcion;
+    private String descripcion;
 
     // PRECIO SIN IGV
     @Column(nullable = false, precision = 12, scale = 2)
