@@ -77,4 +77,27 @@ public class ProductoController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(producto);
     }
+
+    @PutMapping(
+            value = "/{id}/upload",
+            consumes = "multipart/form-data"
+    )
+    public ResponseEntity<ProductoResponse> actualizarConImagen(
+            @PathVariable Long id,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("precio") BigDecimal precio,
+            @RequestParam("unidad") String unidad,
+            @RequestParam("proveedor") String proveedor,
+            @RequestParam("enStock") Boolean enStock,
+            @RequestParam("categoriaId") Long categoriaId
+    ) {
+
+        ProductoResponse producto = productoService.actualizarConImagen(
+                id, file, nombre, descripcion, precio, unidad, proveedor, enStock, categoriaId
+        );
+
+        return ResponseEntity.ok(producto);
+    }
 }

@@ -13,4 +13,9 @@ public class RecursoNoEncontradoException extends RuntimeException {
     public RecursoNoEncontradoException(String mensaje) {
         super(mensaje);
     }
+
+    public RecursoNoEncontradoException(String entidad, String campo, Object valor) {
+        super(String.format("%s no encontrado con %s : '%s'", entidad, campo, valor));
+    }
+
 }

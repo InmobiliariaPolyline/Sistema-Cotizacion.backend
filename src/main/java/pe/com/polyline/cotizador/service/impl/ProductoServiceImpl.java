@@ -147,4 +147,39 @@ public class ProductoServiceImpl implements ProductoService {
         return ProductoMapper.toResponse(productoRepository.save(producto));
     }
 
+    @Override
+    @Transactional
+    public ProductoResponse actualizarConImagen(
+            Long id,
+            MultipartFile file,
+            String nombre,
+            String descripcion,
+            BigDecimal precio,
+            String unidad,
+            String proveedor,
+            Boolean enStock,
+            Long categoriaId
+    ) {
+
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Producto", "id", id));
+
+        Categoria categoria = categoriaService.obtenerEntidad(categoriaId);
+
+        producto.setNombre(nombre.trim());
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precio);
+        producto.setUnidad(unidad.trim());
+        producto.setProveedor(proveedor.trim());
+        producto.setEnStock(enStock != null ? enStock : producto.getEnStock());
+        producto.setCategoria(categoria);
+
+        // Aca para actualizar la imagen, diferecia co el otro actualizar, si el file no es nulo y no esta vacio, se sube la nueva imagen y se actualiza el url
+        if (file != null && !file.isEmpty()) {
+            String url = cloudinaryService.uploadFile(file);
+            producto.setImagenUrl(url);
+        }
+
+        return ProductoMapper.toResponse(productoRepository.save(producto));
+    }
 }

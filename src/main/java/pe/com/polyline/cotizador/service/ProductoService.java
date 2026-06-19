@@ -38,4 +38,16 @@ public interface ProductoService {
             Long categoriaId
     );
 
+    ProductoResponse actualizarConImagen(
+            Long id,
+            MultipartFile file,
+            String nombre,
+            String descripcion,
+            BigDecimal precio,
+            String unidad,
+            String proveedor,
+            Boolean enStock,
+            Long categoriaId
+    );
+
 }
