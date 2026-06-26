@@ -13,7 +13,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Usuario administrador por defecto
 -- Password: admin123 → BCrypt hash
-INSERT INTO usuarios (nombre, correo, password, role, activo, fecha_creacion, fecha_actualizacion)
+INSERT INTO usuarios (nombre, correo, password, rol, activo, fecha_creacion, fecha_actualizacion)
 VALUES ('Administrador',
         'admin@polyline.com',
         '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lVuy',

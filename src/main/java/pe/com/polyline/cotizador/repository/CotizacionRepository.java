@@ -15,6 +15,8 @@ public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
 
     List<Cotizacion> findByEstadoOrderByFechaCreacionDesc(EstadoCotizacion estado);
 
+    List<Cotizacion> findTop5ByOrderByFechaCreacionDesc();
+
     @Query("SELECT COALESCE(MAX(c.numero), 0) FROM Cotizacion c")
     Integer findMaxNumero();
 

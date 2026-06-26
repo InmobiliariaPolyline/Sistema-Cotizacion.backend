@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
@@ -15,4 +16,6 @@ public class DashboardResponse {
     private BigDecimal totalFacturado;
     private Long totalProductos;
     private Long totalCategorias;
+    private List<CategoriaDashboardResponse> categorias;
+    private List<CotizacionDashboardResponse> cotizacionesRecientes;
 }
