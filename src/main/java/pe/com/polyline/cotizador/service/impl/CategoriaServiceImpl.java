@@ -76,12 +76,23 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     @Transactional
-    public void desactivar(Long id) {
+    public void cambiarEstado(Long id, boolean activo) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoría", id));
 
-        categoria.setActivo(false);
+        categoria.setActivo(activo);
         categoriaRepository.save(categoria);
     }
+
+
+    @Override
+    @Transactional
+    public void eliminar(Long id) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Categoría", id));
+
+        categoriaRepository.delete(categoria);
+    }
+
 
 }

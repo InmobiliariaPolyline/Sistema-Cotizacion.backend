@@ -44,9 +44,22 @@ public class CategoriaController {
         return ResponseEntity.ok(categoriaService.actualizar(id, request));
     }
 
+    // ACTIVAR  DESACTIVAR
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Void> cambiarEstado(
+            @PathVariable Long id,
+            @RequestParam boolean activo) {
+
+        categoriaService.cambiarEstado(id, activo);
+        return ResponseEntity.ok().build();
+    }
+
+    // ELIMINAR CATEGORIA
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> desactivar(@PathVariable Long id) {
-        categoriaService.desactivar(id);
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+
+        categoriaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
 }
