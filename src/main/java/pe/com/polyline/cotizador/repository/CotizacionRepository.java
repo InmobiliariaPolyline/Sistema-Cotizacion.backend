@@ -2,7 +2,8 @@ package pe.com.polyline.cotizador.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pe.com.polyline.cotizador.model.Cotizacion;
 import pe.com.polyline.cotizador.model.enums.EstadoCotizacion;
 
@@ -24,4 +25,9 @@ public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
     BigDecimal sumAllTotales();
 
     Long countByEstado(EstadoCotizacion estado);
+
+    Page<Cotizacion> findAllByOrderByFechaCreacionDesc(Pageable pageable);
+
+    Page<Cotizacion> findByEstadoOrderByFechaCreacionDesc(EstadoCotizacion estado, Pageable pageable);
+
 }

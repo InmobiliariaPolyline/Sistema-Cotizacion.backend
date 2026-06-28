@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler {
         static ErrorResponse conCampos(HttpStatus s, Map<String, String> campos) {
             return new ErrorResponse(LocalDateTime.now(), s.value(), "Validación fallida", "Revisa los campos indicados", campos);
         }
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameNotFound(UsernameNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.simple(HttpStatus.UNAUTHORIZED, "No autorizado", "Credenciales incorrectas"));
     }
 
     @ExceptionHandler(RecursoNoEncontradoException.class)

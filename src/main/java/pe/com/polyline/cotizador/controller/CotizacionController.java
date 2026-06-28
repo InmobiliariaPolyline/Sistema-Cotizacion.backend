@@ -2,6 +2,7 @@ package pe.com.polyline.cotizador.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,4 +51,24 @@ public class CotizacionController {
         cotizacionService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> descargarPdf(@PathVariable Long id) {
+
+        byte[] pdf = cotizacionService.generarPdf(id);
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "inline; filename=cotizacion.pdf")
+                .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                .body(pdf);
+    }
+
+    @GetMapping("/paginado")
+    public Page<CotizacionResponse> listarPaginado(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return cotizacionService.listarPaginado(page, size);
+    }
+
 }

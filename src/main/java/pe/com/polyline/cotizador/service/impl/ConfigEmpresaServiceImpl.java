@@ -8,6 +8,7 @@ import pe.com.polyline.cotizador.dto.response.ConfigEmpresaResponse;
 import pe.com.polyline.cotizador.model.ConfigEmpresa;
 import pe.com.polyline.cotizador.repository.ConfigEmpresaRepository;
 import pe.com.polyline.cotizador.service.ConfigEmpresaService;
+import pe.com.polyline.cotizador.repository.ConfigEmpresaRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -76,6 +77,14 @@ public class ConfigEmpresaServiceImpl implements ConfigEmpresaService {
                 .logoUrl(c.getLogoUrl())
                 .fechaActualizacion(c.getFechaActualizacion())
                 .build();
+    }
+
+    @Override
+    public ConfigEmpresa obtenerEntidad() {
+
+        return configEmpresaRepository.findAll().stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No hay configuración de empresa"));
     }
 
 }
