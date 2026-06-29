@@ -30,5 +30,4 @@ build/
 !**/src/test/**/build/
 
 ### VS Code y propiedades sensibles ###
-.vscode/
-src/main/resources/application.properties
+.env
